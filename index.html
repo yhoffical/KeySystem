@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YH Key System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07060d;--card:rgba(13,11,24,.88);--line:rgba(255,255,255,.1);--tx:#f4f3fa;--mut:#9a98b0;--cy:#25f4ee;--pk:#fe2c55;--ok:#3df5a0}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--tx);font-family:"Space Grotesk",system-ui,sans-serif;display:flex;align-items:center;justify-content:center;padding:20px;overflow-x:hidden;position:relative}
+.orb{position:fixed;border-radius:50%;filter:blur(110px);opacity:.2;pointer-events:none;z-index:0;animation:drift 18s ease-in-out infinite alternate}
+.o1{width:460px;height:460px;background:var(--cy);top:-140px;left:-120px}
+.o2{width:520px;height:520px;background:var(--pk);bottom:-180px;right:-140px;animation-duration:23s}
+@keyframes drift{to{transform:translate(70px,50px) scale(1.15)}}
+.grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;opacity:.25;-webkit-mask-image:radial-gradient(circle at 50% 40%,#000,transparent 70%);mask-image:radial-gradient(circle at 50% 40%,#000,transparent 70%)}
+main{position:relative;z-index:1;width:100%;max-width:480px;animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(28px) scale(.97)}}
+.brand{text-align:center;margin-bottom:22px}
+.brand h1{font-size:30px;font-weight:700;letter-spacing:-.02em;background:linear-gradient(90deg,var(--cy),#8b7cff,var(--pk));-webkit-background-clip:text;background-clip:text;color:transparent}
+@keyframes shine{to{background-position:-200% 0}}
+.brand p{color:var(--mut);font-size:14px;margin-top:6px}
+.steps{display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.dot{width:32px;height:32px;border-radius:11px;border:1.5px solid var(--line);display:grid;place-items:center;font-size:12px;color:var(--mut);transition:.4s;background:#0d0b17}
+.dot.on{border-color:var(--cy);color:var(--cy);box-shadow:0 0 18px rgba(37,244,238,.45)}
+.dot.done{background:linear-gradient(135deg,var(--cy),#8b7cff 55%,var(--pk));border-color:transparent;color:#07060d;font-weight:700;border-radius:11px;animation:ok .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes ok{0%{transform:scale(.6) rotate(-12deg)}60%{transform:scale(1.18)}100%{transform:scale(1)}}
+.bar{width:34px;height:3px;border-radius:3px;background:var(--line);position:relative;overflow:hidden}
+.bar i{position:absolute;inset:0;border-radius:3px;background:linear-gradient(90deg,var(--cy),#8b7cff,var(--pk));transform:scaleX(0);transform-origin:left;transition:transform .6s}
+.bar.done i{transform:scaleX(1)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:30px 26px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 30px 80px -20px rgba(0,0,0,.7);text-align:center;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;inset:0;border-radius:22px;padding:1px;background:linear-gradient(135deg,rgba(37,244,238,.6),transparent 35%,transparent 65%,rgba(254,44,85,.6));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.view{display:none}
+.view.show{display:block;animation:pop .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes pop{from{opacity:0;transform:translateX(24px)}}
+h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
+.sub{color:var(--mut);font-size:14px;line-height:1.55;margin-bottom:22px}
+.ico{width:64px;height:64px;margin:0 auto 18px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(37,244,238,.15),rgba(254,44,85,.15));border:1px solid var(--line);animation:float 3.5s ease-in-out infinite}
+.ico svg{width:30px;height:30px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@keyframes float{50%{transform:translateY(-6px)}}
+.btn{width:100%;border:0;border-radius:14px;padding:15px 18px;font:700 15px "Space Grotesk",sans-serif;color:#07060d;cursor:pointer;background:linear-gradient(110deg,var(--cy),#8b7cff 55%,var(--pk));background-size:200% 100%;transition:transform .2s,box-shadow .3s,background-position .6s,opacity .3s;box-shadow:0 10px 30px -10px rgba(37,244,238,.6)}
+.btn:hover:not(:disabled){transform:translateY(-2px);background-position:100% 0;box-shadow:0 14px 36px -8px rgba(254,44,85,.6)}
+.btn:active:not(:disabled){transform:scale(.98)}
+.btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+.btn.ghost{background:transparent;color:var(--tx);border:1px solid var(--line);box-shadow:none;margin-top:10px}
+.btn:focus-visible,.hold:focus-visible{outline:2px solid var(--cy);outline-offset:3px}
+.ring{position:relative;width:132px;height:132px;margin:0 auto 20px}
+.ring svg{transform:rotate(-90deg);width:100%;height:100%}
+.ring circle{fill:none;stroke-width:6}
+.ring .bg{stroke:var(--line)}
+.ring .fg{stroke:url(#g);stroke-linecap:round;stroke-dasharray:352;transition:stroke-dashoffset .3s linear}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:34px;font-weight:700}
+.hold{position:relative;width:132px;height:132px;margin:0 auto 20px;border-radius:50%;border:0;background:#0d0b17;color:var(--tx);font:500 13px "Space Grotesk",sans-serif;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:none}
+.hold svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.hold circle{fill:none;stroke-width:6}
+.hold .fg{stroke:url(#g);stroke-dasharray:352;stroke-dashoffset:352;stroke-linecap:round}
+.hold span{position:relative}
+.key{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;word-break:break-all;background:rgba(0,0,0,.4);border:1px dashed rgba(37,244,238,.5);border-radius:14px;padding:18px 14px;margin-bottom:14px;color:var(--cy);line-height:1.5;animation:glow 2.4s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:0 0 26px rgba(37,244,238,.3)}}
+.exp{color:var(--mut);font-size:13px;margin-bottom:16px}
+.exp b{color:var(--pk);font-variant-numeric:tabular-nums}
+.toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,90px);background:#16132a;border:1px solid var(--line);padding:11px 18px;border-radius:12px;font-size:14px;transition:transform .4s cubic-bezier(.2,.8,.2,1);z-index:9}
+.toast.show{transform:translate(-50%,0)}
+.foot{text-align:center;color:var(--mut);font-size:12px;margin-top:18px}
+@media(max-width:420px){.bar{width:20px}.card{padding:26px 18px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="orb o1"></div><div class="orb o2"></div><div class="grid"></div>
+<svg width="0" height="0" style="position:absolute"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#25f4ee"/><stop offset=".5" stop-color="#8b7cff"/><stop offset="1" stop-color="#fe2c55"/></linearGradient></defs></svg>
+
+<main>
+  <div class="brand"><h1>YH Key System</h1><p>Complete the steps to unlock your free key</p></div>
+  <div class="steps" id="steps"></div>
+
+  <div class="card">
+    <!-- 0 Follow -->
+    <section class="view" data-v="0">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg></div>
+      <h2>Follow on TikTok</h2>
+      <p class="sub">Open the profile, follow @yh_devx, then come back and wait for the timer to finish.</p>
+      <div class="ring" id="ring0" hidden><svg viewBox="0 0 120 120"><circle class="bg" cx="60" cy="60" r="56"/><circle class="fg" cx="60" cy="60" r="56"/></svg><b>80</b></div>
+      <button class="btn" id="open0">Open TikTok profile</button>
+      <button class="btn ghost" id="next0" disabled>Continue</button>
+    </section>
+
+    <!-- 1 Like -->
+    <section class="view" data-v="1">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg></div>
+      <h2>Like the video</h2>
+      <p class="sub">Open the video, tap the like button, then return and wait for the timer to finish.</p>
+      <div class="ring" id="ring1" hidden><svg viewBox="0 0 120 120"><circle class="bg" cx="60" cy="60" r="56"/><circle class="fg" cx="60" cy="60" r="56"/></svg><b>80</b></div>
+      <button class="btn" id="open1">Open TikTok video</button>
+      <button class="btn ghost" id="next1" disabled>Continue</button>
+    </section>
+
+    <!-- 2 Human check -->
+    <section class="view" data-v="2">
+      <h2>Verify you are human</h2>
+      <p class="sub">Press and hold the circle until it fills.</p>
+      <button class="hold" id="hold" aria-label="Press and hold to verify"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" stroke="rgba(255,255,255,.1)"/><circle class="fg" id="hfg" cx="60" cy="60" r="56"/></svg><span id="htxt">Hold</span></button>
+    </section>
+
+    <!-- 3 Get key -->
+    <section class="view" data-v="3">
+      <div class="ico"><svg viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3 21 2M16 7l3 3M14 9l2 2"/></svg></div>
+      <h2>All steps complete</h2>
+      <p class="sub">You are ready to get your key.</p>
+      <button class="btn" id="getkey">GetKey</button>
+    </section>
+
+    <!-- 4 Create key -->
+    <section class="view" data-v="4">
+      <div id="make">
+        <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <h2>Your key</h2>
+        <p class="sub">Each key works for 24 hours. After that you will need to create a new one.</p>
+        <button class="btn" id="create">Create My Key</button>
+      </div>
+      <div id="shown" hidden>
+        <h2>Key created</h2>
+        <p class="sub">Copy it and paste it into the script.</p>
+        <div class="key" id="keyout"></div>
+        <p class="exp">Expires in <b id="left">24:00:00</b></p>
+        <button class="btn" id="copy">Copy key</button>
+      </div>
+    </section>
+  </div>
+  <p class="foot">YH Devx</p>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var PROFILE="https://www.tiktok.com/@yh_devx";
+  var VIDEO="https://vt.tiktok.com/ZSs6eG8Aq/";
+  var WAIT=80000, LIFE=24*60*60*1000, SK="yh_keysys_v1";
+  var $=function(s){return document.querySelector(s)};
+  var S=load();
+
+  function load(){
+    try{var d=JSON.parse(localStorage.getItem(SK));if(d&&typeof d.step==="number")return d}catch(e){}
+    return {step:0,t:{},key:null};
+  }
+  function save(){try{localStorage.setItem(SK,JSON.stringify(S))}catch(e){}}
+  function toast(m){var t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove("show")},2600)}
+
+  // Stepper
+  var stepsEl=$("#steps");
+  for(var i=0;i<5;i++){
+    if(i){var b=document.createElement("div");b.className="bar";b.innerHTML="<i></i>";stepsEl.appendChild(b)}
+    var d=document.createElement("div");d.className="dot";d.textContent=i+1;stepsEl.appendChild(d);
+  }
+  function drawSteps(){
+    var dots=stepsEl.querySelectorAll(".dot"),bars=stepsEl.querySelectorAll(".bar");
+    dots.forEach(function(el,i){
+      el.className="dot"+(i<S.step?" done":i===S.step?" on":"");
+      el.textContent=i<S.step?"\u2713":i+1;
+    });
+    bars.forEach(function(el,i){el.className="bar"+(i<S.step?" done":"")});
+  }
+
+  function go(n){S.step=n;save();render()}
+  function render(){
+    document.querySelectorAll(".view").forEach(function(v){v.classList.toggle("show",+v.dataset.v===S.step)});
+    drawSteps();
+    if(S.step===4)renderKey();
+    tick();
+  }
+
+  // Timed steps (follow / like)
+  function setup(n,url,key){
+    var open=$("#open"+n),next=$("#next"+n);
+    open.onclick=function(){
+      window.open(url,"_blank","noopener");
+      if(!S.t[key]){S.t[key]=Date.now()+WAIT;save()}
+      tick();
+    };
+    next.onclick=function(){
+      if(S.t[key]&&Date.now()>=S.t[key])go(n+1);
+    };
+  }
+  setup(0,PROFILE,"follow");
+  setup(1,VIDEO,"like");
+
+  function tickStep(n,key){
+    var ring=$("#ring"+n),open=$("#open"+n),next=$("#next"+n),end=S.t[key];
+    if(!end){ring.hidden=true;open.hidden=false;next.disabled=true;return}
+    var left=Math.max(0,Math.ceil((end-Date.now())/1000));
+    ring.hidden=false;
+    ring.querySelector("b").textContent=left;
+    ring.querySelector(".fg").style.strokeDashoffset=352*(1-(WAIT/1000-left)/(WAIT/1000));
+    next.disabled=left>0;
+    open.textContent=left>0?"Open again":"Open again";
+    if(left===0){next.classList.remove("ghost")}
+  }
+
+  // Key
+  function genKey(){
+    var a="abcdefghijklmnopqrstuvwxyz0123456789",o="",r=new Uint32Array(25);
+    crypto.getRandomValues(r);
+    for(var i=0;i<25;i++)o+=a[r[i]%a.length];
+    return "YHFree="+o;
+  }
+  function renderKey(){
+    var k=S.key,has=k&&k.exp>Date.now();
+    $("#make").hidden=!!has;
+    $("#shown").hidden=!has;
+    if(has)$("#keyout").textContent=k.v;
+  }
+  $("#getkey").onclick=function(){go(4)};
+  $("#create").onclick=function(){
+    S.key={v:genKey(),exp:Date.now()+LIFE};save();renderKey();toast("Key created");
+  };
+  $("#copy").onclick=function(){
+    var v=S.key&&S.key.v;if(!v)return;
+    var done=function(){toast("Key copied")};
+    if(navigator.clipboard){navigator.clipboard.writeText(v).then(done,function(){fallback(v);done()})}
+    else{fallback(v);done()}
+  };
+  function fallback(v){var t=document.createElement("textarea");t.value=v;document.body.appendChild(t);t.select();try{document.execCommand("copy")}catch(e){}t.remove()}
+
+  function tickKey(){
+    if(S.step!==4||!S.key)return;
+    var ms=S.key.exp-Date.now();
+    if(ms<=0){ // Key expired: reset the whole flow
+      S={step:0,t:{},key:null};save();render();toast("Key expired. Create a new one.");return;
+    }
+    var h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000),s=Math.floor(ms%60000/1000);
+    $("#left").textContent=[h,m,s].map(function(x){return String(x).padStart(2,"0")}).join(":");
+  }
+
+  // Hold to verify
+  var hold=$("#hold"),hfg=$("#hfg"),hstart=0,raf=0,HOLD=1600;
+  function hframe(){
+    var p=Math.min(1,(Date.now()-hstart)/HOLD);
+    hfg.style.strokeDashoffset=352*(1-p);
+    if(p>=1){stopHold(true);return}
+    raf=requestAnimationFrame(hframe);
+  }
+  function startHold(e){e.preventDefault();hstart=Date.now();$("#htxt").textContent="Keep holding";raf=requestAnimationFrame(hframe)}
+  function stopHold(ok){
+    cancelAnimationFrame(raf);raf=0;
+    if(ok===true){$("#htxt").textContent="Verified";setTimeout(function(){go(3);hfg.style.strokeDashoffset=352;$("#htxt").textContent="Hold"},500)}
+    else{hfg.style.strokeDashoffset=352;$("#htxt").textContent="Hold"}
+  }
+  hold.addEventListener("pointerdown",startHold);
+  ["pointerup","pointerleave","pointercancel"].forEach(function(ev){hold.addEventListener(ev,function(){if(raf)stopHold(false)})});
+  hold.addEventListener("keydown",function(e){if((e.key===" "||e.key==="Enter")&&!raf&&!e.repeat)startHold(e)});
+  hold.addEventListener("keyup",function(e){if(raf)stopHold(false)});
+
+  function tick(){
+    if(S.step===0)tickStep(0,"follow");
+    if(S.step===1)tickStep(1,"like");
+    tickKey();
+  }
+  setInterval(tick,250);
+
+  // A key may already have expired while the page was closed
+  if(S.step===4&&S.key&&S.key.exp<=Date.now()){S={step:0,t:{},key:null};save()}
+  render();
+})();
+</script>
+</body>
+</html>
