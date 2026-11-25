@@ -148,7 +148,8 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
 (function(){
   var PROFILE="https://www.tiktok.com/@yh_devx";
   var VIDEO="https://vt.tiktok.com/ZSs6eG8Aq/";
-  var WAIT=80000, LIFE=24*60*60*1000, SK="yh_keysys_v1";
+  var API_URL="https://script.google.com/macros/s/AKfycbxVRsAvd56rRV40bdyV9qwnLlEJEzHuMcSn55HXDl4YjE0TENIcQSKBcinJ5lbgDVa8/exec";
+  var WAIT=80000, LIFE=24*60*60*1000, SK="yh_keysys_v2";
   var $=function(s){return document.querySelector(s)};
   var S=load();
 
@@ -210,13 +211,8 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
     if(left===0){next.classList.remove("ghost")}
   }
 
-  // Key
-  function genKey(){
-    var a="abcdefghijklmnopqrstuvwxyz0123456789",o="",r=new Uint32Array(25);
-    crypto.getRandomValues(r);
-    for(var i=0;i<25;i++)o+=a[r[i]%a.length];
-    return "YHFree="+o;
-  }
+  // Key from API
+  var creating=false;
   function renderKey(){
     var k=S.key,has=k&&k.exp>Date.now();
     $("#make").hidden=!!has;
@@ -225,7 +221,29 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
   }
   $("#getkey").onclick=function(){go(4)};
   $("#create").onclick=function(){
-    S.key={v:genKey(),exp:Date.now()+LIFE};save();renderKey();toast("Key created");
+    if(creating)return;
+    creating=true;
+    var btn=$("#create");
+    btn.disabled=true;
+    btn.textContent="Creating...";
+    fetch(API_URL+"?action=generate")
+      .then(function(r){return r.json()})
+      .then(function(data){
+        if(!data||!data.key)throw new Error("No key");
+        S.key={v:String(data.key).trim(),exp:Date.now()+LIFE};
+        save();
+        renderKey();
+        tickKey();
+        toast("Key created");
+      })
+      .catch(function(){
+        toast("Failed to generate key");
+      })
+      .finally(function(){
+        creating=false;
+        btn.disabled=false;
+        btn.textContent="Create My Key";
+      });
   };
   $("#copy").onclick=function(){
     var v=S.key&&S.key.v;if(!v)return;
@@ -238,7 +256,7 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
   function tickKey(){
     if(S.step!==4||!S.key)return;
     var ms=S.key.exp-Date.now();
-    if(ms<=0){ // Key expired: reset the whole flow
+    if(ms<=0){
       S={step:0,t:{},key:null};save();render();toast("Key expired. Create a new one.");return;
     }
     var h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000),s=Math.floor(ms%60000/1000);
@@ -264,9 +282,9 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
   hold.addEventListener("keydown",function(e){if((e.key===" "||e.key==="Enter")&&!raf&&!e.repeat)startHold(e)});
   hold.addEventListener("keyup",function(e){if(raf)stopHold(false)});
 
-  // Create another key (replaces the current one and restarts the 24h timer)
+  // Create another key: start the whole flow again from step 1
   $("#again").onclick=function(){
-    S.key={v:genKey(),exp:Date.now()+LIFE};save();renderKey();tickKey();toast("New key created");
+    S={step:0,t:{},key:null};save();render();toast("Starting over");
   };
 
   // Secret access code: only a salted PBKDF2 hash is stored here, never the code itself
@@ -301,7 +319,6 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
   }
   setInterval(tick,250);
 
-  // A key may already have expired while the page was closed
   if(S.step===4&&S.key&&S.key.exp<=Date.now()){S={step:0,t:{},key:null};save()}
   render();
 })();
