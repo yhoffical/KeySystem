@@ -1,0 +1,62 @@
+name: Maintenance toggle
+
+on:
+  # Button: Actions tab > Maintenance toggle > Run workflow
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Maintenance mode"
+        required: true
+        type: choice
+        options: ["on", "off"]
+  # Issue: open an issue titled "maintenance on" or "maintenance off"
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  toggle:
+    runs-on: ubuntu-latest
+    # Issues only count when opened by the repo owner
+    if: github.event_name == 'workflow_dispatch' || github.event.issue.user.login == github.repository_owner
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Decide mode
+        id: m
+        env:
+          EVENT: ${{ github.event_name }}
+          INPUT_MODE: ${{ inputs.mode }}
+          TITLE: ${{ github.event.issue.title }}
+        run: |
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            MODE="$INPUT_MODE"
+          else
+            T=$(echo "$TITLE" | tr '[:upper:]' '[:lower:]' | xargs)
+            case "$T" in
+              "maintenance on"|"on") MODE=on ;;
+              "maintenance off"|"off") MODE=off ;;
+              *) MODE=none ;;
+            esac
+          fi
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+
+      - name: Write update.json
+        if: steps.m.outputs.mode != 'none'
+        run: |
+          if [ "${{ steps.m.outputs.mode }}" = "on" ]; then V=true; else V=false; fi
+          printf '{"maintenance": %s, "updated": "%s"}\n' "$V" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > update.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add update.json
+          git commit -m "maintenance: ${{ steps.m.outputs.mode }}" || exit 0
+          git push
+
+      - name: Close issue
+        if: github.event_name == 'issues'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue close ${{ github.event.issue.number }} --repo ${{ github.repository }}
