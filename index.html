@@ -84,6 +84,22 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
 .pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:99px;padding:6px 14px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin-bottom:14px}
 .pill i{width:8px;height:8px;border-radius:50%;background:var(--pk);animation:pulse 1.4s ease-in-out infinite}
 @keyframes pulse{50%{opacity:.25;transform:scale(.7)}}
+.notice{position:fixed;inset:0;z-index:25;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(7,6,13,.9);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.notice.show{display:flex;animation:fade .5s}
+.ncard{width:100%;max-width:460px;padding:36px 26px 26px;box-shadow:0 0 70px -10px rgba(254,44,85,.35),0 30px 80px -20px rgba(0,0,0,.8);animation:nin .8s cubic-bezier(.2,.9,.2,1.08) both}
+@keyframes nin{from{opacity:0;transform:translateY(40px) scale(.86);filter:blur(8px)}}
+.ncard::after{content:"";position:absolute;left:0;top:0;height:3px;width:100%;background:linear-gradient(90deg,transparent,var(--pk),#ff8a5c,transparent);background-size:50% 100%;background-repeat:no-repeat;animation:sweep 2.6s ease-in-out infinite}
+@keyframes sweep{from{background-position:-60% 0}to{background-position:160% 0}}
+.warn{position:relative;width:84px;height:84px;margin:0 auto 20px;border-radius:26px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(254,44,85,.22),rgba(255,138,92,.12));border:1px solid rgba(254,44,85,.45);animation:wob 3.2s ease-in-out infinite}
+.warn svg{width:42px;height:42px;stroke:#ff5c7c;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.warn::before,.warn::after{content:"";position:absolute;inset:0;border-radius:26px;border:1.5px solid var(--pk);animation:rip 2.4s ease-out infinite;opacity:0}
+.warn::after{animation-delay:1.2s}
+@keyframes rip{from{opacity:.7;transform:scale(1)}to{opacity:0;transform:scale(1.65)}}
+@keyframes wob{0%,80%,100%{transform:rotate(0)}85%{transform:rotate(-9deg)}90%{transform:rotate(8deg)}95%{transform:rotate(-5deg)}}
+.ncard h2{font-size:26px;background:linear-gradient(90deg,var(--pk),#ff8a5c);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:16px}
+.nl{margin-bottom:22px}
+.nl p{color:#dcdaea;font-size:15px;line-height:1.6;padding:12px 14px;margin-bottom:8px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);opacity:0;animation:up .6s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,90px);background:#16132a;border:1px solid var(--line);padding:11px 18px;border-radius:12px;font-size:14px;transition:transform .4s cubic-bezier(.2,.8,.2,1);z-index:9}
 .toast.show{transform:translate(-50%,0)}
 .foot{text-align:center;color:var(--mut);font-size:12px;margin-top:18px}
@@ -163,6 +179,15 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
     <span class="pill"><i></i>Updating</span>
     <h2>Maintenance</h2>
     <p class="sub">Once the update is finished, we will announce it in our Discord server. Thank you for your patience.</p>
+    <a class="dc" href="https://discord.gg/RPY4veGmp" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/></svg><span>Discord</span></a>
+  </div>
+</div>
+<div class="notice" id="notice" role="alertdialog" aria-modal="true" aria-labelledby="ntitle">
+  <div class="card ncard">
+    <div class="warn"><svg viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></div>
+    <h2 id="ntitle">Warning</h2>
+    <div class="nl" id="nlines"></div>
+    <button class="btn" id="nok">I Understand</button>
     <a class="dc" href="https://discord.gg/RPY4veGmp" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/></svg><span>Discord</span></a>
   </div>
 </div>
@@ -335,6 +360,35 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
   }
   $("#codego").onclick=submitCode;
   $("#codein").addEventListener("keydown",function(e){if(e.key==="Enter")submitCode()});
+
+  // One-time notice: text comes from notice.json, shown again only when the text changes
+  var NK="yh_notice_seen",curNotice=null;
+  function hashStr(t){var h=5381;for(var i=0;i<t.length;i++)h=((h<<5)+h+t.charCodeAt(i))|0;return String(h)}
+  function checkNotice(){
+    fetch("notice.json?_="+Date.now(),{cache:"no-store"})
+      .then(function(r){return r.json()})
+      .then(function(d){
+        if(!d||d.enabled===false||!d.lines||!d.lines.length)return;
+        var id=hashStr((d.title||"")+"|"+d.lines.join("|"));
+        var seen=null;try{seen=localStorage.getItem(NK)}catch(e){}
+        if(seen===id)return;
+        curNotice=id;
+        $("#ntitle").textContent=d.title||"Warning";
+        var box=$("#nlines");box.innerHTML="";
+        d.lines.forEach(function(t,i){
+          var p=document.createElement("p");p.textContent=t;
+          p.style.animationDelay=(0.4+i*0.2)+"s";box.appendChild(p);
+        });
+        $("#notice").classList.add("show");
+        $("#nok").focus();
+      })
+      .catch(function(){});
+  }
+  $("#nok").onclick=function(){
+    try{localStorage.setItem(NK,curNotice)}catch(e){}
+    $("#notice").classList.remove("show");
+  };
+  checkNotice();
 
   // Maintenance mode: controlled by update.json in the repo
   var MAINT=false;
