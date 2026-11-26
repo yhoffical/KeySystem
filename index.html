@@ -70,6 +70,20 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
 .code button:hover{border-color:var(--pk)}
 .code.bad{animation:shake .4s}
 @keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.dc{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:14px;padding:14px 18px;border-radius:14px;background:#5865f2;color:#fff;font:700 15px "Space Grotesk",sans-serif;text-decoration:none;box-shadow:0 10px 28px -10px rgba(88,101,242,.8);transition:transform .2s,box-shadow .3s,background .3s}
+.dc svg{width:22px;height:22px}
+.dc:hover{transform:translateY(-2px);background:#6b77f5;box-shadow:0 14px 34px -8px rgba(88,101,242,.9)}
+.dc:focus-visible{outline:2px solid var(--cy);outline-offset:3px}
+.maint{position:fixed;inset:0;z-index:30;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(7,6,13,.95);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.maint.show{display:flex;animation:fade .5s}
+@keyframes fade{from{opacity:0}}
+.mcard{width:100%;max-width:440px;padding:38px 28px}
+.gear{width:84px;height:84px;margin:0 auto 18px;border-radius:26px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(37,244,238,.15),rgba(254,44,85,.15));border:1px solid var(--line)}
+.gear svg{width:44px;height:44px;stroke:url(#g);fill:none;animation:spin 7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:99px;padding:6px 14px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin-bottom:14px}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--pk);animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25;transform:scale(.7)}}
 .toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,90px);background:#16132a;border:1px solid var(--line);padding:11px 18px;border-radius:12px;font-size:14px;transition:transform .4s cubic-bezier(.2,.8,.2,1);z-index:9}
 .toast.show{transform:translate(-50%,0)}
 .foot{text-align:center;color:var(--mut);font-size:12px;margin-top:18px}
@@ -140,8 +154,18 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
     </section>
   </div>
   <div class="code" id="codebox"><input id="codein" type="password" maxlength="6" placeholder="Access code" autocomplete="off" spellcheck="false" aria-label="Access code"><button id="codego">Apply</button></div>
+  <a class="dc" href="https://discord.gg/RPY4veGmp" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/></svg><span>Discord</span></a>
   <p class="foot">YH Devx</p>
 </main>
+<div class="maint" id="maint" role="alert" aria-live="polite">
+  <div class="card mcard">
+    <div class="gear"><svg viewBox="0 0 24 24" stroke-width="1.6" stroke-linecap="butt"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.38 3.38"/><circle cx="12" cy="12" r="6.6"/><circle cx="12" cy="12" r="2.4"/></svg></div>
+    <span class="pill"><i></i>Updating</span>
+    <h2>Maintenance</h2>
+    <p class="sub">Once the update is finished, we will announce it in our Discord server. Thank you for your patience.</p>
+    <a class="dc" href="https://discord.gg/RPY4veGmp" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/></svg><span>Discord</span></a>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -221,7 +245,7 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
   }
   $("#getkey").onclick=function(){go(4)};
   $("#create").onclick=function(){
-    if(creating)return;
+    if(creating||MAINT)return;
     creating=true;
     var btn=$("#create");
     btn.disabled=true;
@@ -256,7 +280,7 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
   function tickKey(){
     if(S.step!==4||!S.key)return;
     var ms=S.key.exp-Date.now();
-    if(ms<=0){
+    if(ms<=0){ // Key expired: reset the whole flow
       S={step:0,t:{},key:null};save();render();toast("Key expired. Create a new one.");return;
     }
     var h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000),s=Math.floor(ms%60000/1000);
@@ -312,6 +336,22 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
   $("#codego").onclick=submitCode;
   $("#codein").addEventListener("keydown",function(e){if(e.key==="Enter")submitCode()});
 
+  // Maintenance mode: controlled by update.json in the repo
+  var MAINT=false;
+  function checkMaint(){
+    fetch("update.json?_="+Date.now(),{cache:"no-store"})
+      .then(function(r){return r.json()})
+      .then(function(d){
+        var on=!!(d&&d.maintenance);
+        if(on&&!MAINT){S={step:0,t:{},key:null};save();render()} // stop all keys
+        MAINT=on;
+        $("#maint").classList.toggle("show",on);
+      })
+      .catch(function(){});
+  }
+  checkMaint();
+  setInterval(checkMaint,30000);
+
   function tick(){
     if(S.step===0)tickStep(0,"follow");
     if(S.step===1)tickStep(1,"like");
@@ -319,6 +359,7 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
   }
   setInterval(tick,250);
 
+  // A key may already have expired while the page was closed
   if(S.step===4&&S.key&&S.key.exp<=Date.now()){S={step:0,t:{},key:null};save()}
   render();
 })();
