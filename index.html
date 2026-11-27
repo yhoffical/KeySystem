@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>YH Key System</title>
+<meta name="theme-color" content="#07060d">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
@@ -117,6 +119,24 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 .rok{text-align:center;display:none}
 .rok .ico svg{stroke:var(--ok)}
+.wn{position:fixed;inset:0;z-index:24;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(7,6,13,.88);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.wn.show{display:flex;animation:fade .5s}
+.wcard{width:100%;max-width:440px;padding:36px 26px 26px;box-shadow:0 0 70px -10px rgba(139,124,255,.45),0 30px 80px -20px rgba(0,0,0,.8);animation:nin .8s cubic-bezier(.2,.9,.2,1.08) both}
+.spark{width:84px;height:84px;margin:0 auto 16px;border-radius:26px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(37,244,238,.18),rgba(139,124,255,.18));border:1px solid rgba(139,124,255,.5);animation:float 3.5s ease-in-out infinite,glow2 2.8s ease-in-out infinite}
+.spark svg{width:44px;height:44px;stroke:url(#g);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+@keyframes glow2{50%{box-shadow:0 0 34px rgba(139,124,255,.5)}}
+.wcard .pill{margin-bottom:12px}
+.wcard h2{font-size:26px;background:linear-gradient(90deg,var(--cy),#8b7cff,var(--pk));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:16px}
+.wl{list-style:none;padding:0;margin:0 0 22px;text-align:left}
+.wl li{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;margin-bottom:8px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#dcdaea;font-size:15px;line-height:1.5;opacity:0;animation:up .6s cubic-bezier(.2,.8,.2,1) forwards}
+.wl li::before{content:"\2713";flex:none;width:22px;height:22px;margin-top:1px;border-radius:7px;display:grid;place-items:center;font-size:12px;font-weight:700;color:#07060d;background:linear-gradient(135deg,var(--cy),#8b7cff 55%,var(--pk))}
+.adm{position:fixed;inset:0;z-index:28;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(7,6,13,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.adm.show{display:flex;animation:fade .4s}
+.acard{width:100%;max-width:440px;animation:nin .6s cubic-bezier(.2,.9,.2,1.08) both}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
+.st{padding:18px 10px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.st b{display:block;font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;background:linear-gradient(90deg,var(--cy),#8b7cff,var(--pk));-webkit-background-clip:text;background-clip:text;color:transparent}
+.st span{font-size:12px;color:var(--mut)}
 .toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,90px);background:#16132a;border:1px solid var(--line);padding:11px 18px;border-radius:12px;font-size:14px;transition:transform .4s cubic-bezier(.2,.8,.2,1);z-index:9}
 .toast.show{transform:translate(-50%,0)}
 .foot{text-align:center;color:var(--mut);font-size:12px;margin-top:18px}
@@ -226,6 +246,35 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
       <h2>Report sent</h2>
       <p class="sub">Thank you. We will email you as soon as the problem is reviewed and fixed.</p>
       <button class="btn ghost" id="rdone">Close</button>
+    </div>
+  </div>
+</div>
+<div class="wn" id="wn" role="dialog" aria-modal="true" aria-labelledby="wntitle">
+  <div class="card wcard">
+    <div class="spark"><svg viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 3v4M17 5h4M5 17v4M3 19h4"/></svg></div>
+    <span class="pill" id="wnver" hidden></span>
+    <h2 id="wntitle">What’s New</h2>
+    <ul class="wl" id="wnlines"></ul>
+    <button class="btn" id="wnok">Awesome</button>
+  </div>
+</div>
+<div class="adm" id="adm" role="dialog" aria-modal="true" aria-labelledby="atitle">
+  <div class="card acard">
+    <button class="rx" id="aclose" aria-label="Close">&times;</button>
+    <h2 id="atitle">Admin</h2>
+    <div id="alock">
+      <p class="sub">Enter your admin key to view the stats</p>
+      <label class="fld">Admin key<input id="akey" type="password" autocomplete="off"></label>
+      <button class="btn" id="ago">Unlock</button>
+    </div>
+    <div id="astats" hidden>
+      <div class="sg">
+        <div class="st"><b data-k="created">0</b><span>Keys created</span></div>
+        <div class="st"><b data-k="active">0</b><span>Active keys</span></div>
+        <div class="st"><b data-k="expired">0</b><span>Expired keys</span></div>
+        <div class="st"><b data-k="resets">0</b><span>Key resets</span></div>
+      </div>
+      <button class="btn ghost" id="aref">Refresh</button>
     </div>
   </div>
 </div>
@@ -439,6 +488,75 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
       .finally(function(){sending=false;btn.disabled=false;btn.textContent="Send report"});
   };
 
+  // What's new popup (shown once per update, text comes from whatsnew.json)
+  var WK="yh_whatsnew_seen",pendWN=null;
+  function fetchWN(){
+    fetch("whatsnew.json?_="+Date.now(),{cache:"no-store"})
+      .then(function(r){return r.json()})
+      .then(function(d){
+        if(!d||d.enabled===false||!d.lines||!d.lines.length)return;
+        var id=hashStr((d.title||"")+"|"+(d.version||"")+"|"+d.lines.join("|")+"|"+(d.updated||""));
+        var seen=null;try{seen=localStorage.getItem(WK)}catch(e){}
+        if(seen===id)return;
+        pendWN={id:id,d:d};setTimeout(showWN,1200);
+      })
+      .catch(function(){});
+  }
+  function showWN(){
+    if(!pendWN||MAINT||$("#notice").classList.contains("show"))return;
+    var d=pendWN.d,v=$("#wnver");
+    $("#wntitle").textContent=d.title||"What\u2019s New";
+    v.hidden=!d.version;v.textContent=d.version||"";
+    var box=$("#wnlines");box.innerHTML="";
+    d.lines.forEach(function(t,i){
+      var li=document.createElement("li");li.textContent=t;
+      li.style.animationDelay=(0.4+i*0.18)+"s";box.appendChild(li);
+    });
+    $("#wn").classList.add("show");$("#wnok").focus();
+  }
+  $("#wnok").onclick=function(){
+    if(pendWN){try{localStorage.setItem(WK,pendWN.id)}catch(e){}}
+    pendWN=null;$("#wn").classList.remove("show");
+  };
+  fetchWN();
+
+  // Admin stats panel: open the site with #admin. Data is only returned by the servers when the admin key matches
+  var admKey="";
+  function post(url,body){
+    return fetch(url,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body)})
+      .then(function(r){return r.json()});
+  }
+  function countUp(el,to){
+    if(typeof to!=="number"){el.textContent="-";return}
+    var t0=Date.now();
+    (function f(){var p=Math.min(1,(Date.now()-t0)/700);el.textContent=Math.round(to*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)})();
+  }
+  function openAdm(){$("#adm").classList.add("show");$("#alock").hidden=false;$("#astats").hidden=true;$("#akey").value="";$("#akey").focus()}
+  function closeAdm(){
+    $("#adm").classList.remove("show");admKey="";
+    if(location.hash==="#admin"){try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}}
+  }
+  function loadStats(btn,label){
+    btn.disabled=true;btn.textContent="Loading...";
+    post(API_URL,{action:"stats",admin:admKey}).then(function(a){
+      if(!a||!a.ok)throw new Error("denied");
+      var vals={created:a.created,active:a.active,expired:a.expired,resets:a.resets};
+      document.querySelectorAll("#astats [data-k]").forEach(function(el){countUp(el,vals[el.dataset.k])});
+      $("#alock").hidden=true;$("#astats").hidden=false;
+    }).catch(function(){admKey="";toast("Wrong key or server error")})
+      .finally(function(){btn.disabled=false;btn.textContent=label});
+  }
+  $("#ago").onclick=function(){
+    var v=$("#akey").value;if(!v)return;
+    admKey=v;$("#akey").value="";loadStats($("#ago"),"Unlock");
+  };
+  $("#akey").addEventListener("keydown",function(e){if(e.key==="Enter")$("#ago").click()});
+  $("#aref").onclick=function(){loadStats($("#aref"),"Refresh")};
+  $("#aclose").onclick=closeAdm;
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&$("#adm").classList.contains("show"))closeAdm()});
+  function chkHash(){if(location.hash==="#admin")openAdm()}
+  window.addEventListener("hashchange",chkHash);chkHash();
+
   // One-time notice: text comes from notice.json, shown again only when the text changes
   var NK="yh_notice_seen",curNotice=null;
   function hashStr(t){var h=5381;for(var i=0;i<t.length;i++)h=((h<<5)+h+t.charCodeAt(i))|0;return String(h)}
@@ -447,7 +565,7 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
       .then(function(r){return r.json()})
       .then(function(d){
         if(!d||d.enabled===false||!d.lines||!d.lines.length)return;
-        var id=hashStr((d.title||"")+"|"+d.lines.join("|"));
+        var id=hashStr((d.title||"")+"|"+d.lines.join("|")+(d.updated?"|"+d.updated:""));
         var seen=null;try{seen=localStorage.getItem(NK)}catch(e){}
         if(seen===id)return;
         curNotice=id;
@@ -465,6 +583,7 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
   $("#nok").onclick=function(){
     try{localStorage.setItem(NK,curNotice)}catch(e){}
     $("#notice").classList.remove("show");
+    setTimeout(showWN,600);
   };
   checkNotice();
 
@@ -474,6 +593,12 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
     fetch("update.json?_="+Date.now(),{cache:"no-store"})
       .then(function(r){return r.json()})
       .then(function(d){
+        var rid=d&&d.reset?String(d.reset):"",stored=null;
+        try{stored=localStorage.getItem("yh_reset")}catch(e){}
+        if(rid&&stored!==rid){
+          if(stored!==null&&S.key){S={step:0,t:{},key:null};save();render();toast("Keys were reset. Create a new key")}
+          try{localStorage.setItem("yh_reset",rid)}catch(e){}
+        }
         var on=!!(d&&d.maintenance);
         if(on&&!MAINT){S={step:0,t:{},key:null};save();render()} // stop all keys
         MAINT=on;
