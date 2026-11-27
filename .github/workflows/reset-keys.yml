@@ -1,0 +1,37 @@
+name: Reset keys
+
+# Button: Actions tab > Reset keys > Run workflow
+# Needs repository secrets: KEY_API_URL (the key Apps Script /exec URL) and ADMIN_KEY
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Invalidate every key on the server
+        env:
+          KEY_API_URL: ${{ secrets.KEY_API_URL }}
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          if [ -z "$KEY_API_URL" ] || [ -z "$ADMIN_KEY" ]; then echo "Missing secrets KEY_API_URL / ADMIN_KEY"; exit 1; fi
+          BODY=$(jq -n --arg a "$ADMIN_KEY" '{action:"reset",admin:$a}')
+          RES=$(curl -sL --data "$BODY" -H "Content-Type: text/plain" "$KEY_API_URL")
+          echo "$RES" | jq -e '.ok == true' > /dev/null || { echo "Reset failed"; exit 1; }
+          echo "All keys were reset"
+
+      - name: Tell the site to clear stored keys
+        run: |
+          jq --arg r "$(date -u +%s)" '.reset = $r' update.json > u.tmp && mv u.tmp update.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add update.json
+          git commit -m "keys reset" || exit 0
+          git pull --rebase
+          git push
