@@ -22,8 +22,12 @@ jobs:
         run: |
           if [ -z "$ADMIN_KEY" ]; then echo "Missing secret ADMIN_KEY"; exit 1; fi
           BODY=$(jq -n --arg a "$ADMIN_KEY" '{action:"reset",admin:$a}')
-          RES=$(curl -sL --data "$BODY" -H "Content-Type: text/plain" "$KEY_API_URL")
-          echo "$RES" | jq -e '.ok == true' > /dev/null || { echo "Reset failed"; exit 1; }
+          RES=$(curl -sL --max-time 60 --data "$BODY" -H "Content-Type: text/plain" "$KEY_API_URL")
+          echo "Server answer: ${RES:0:300}"
+          if ! echo "$RES" | jq -e '.ok == true' > /dev/null 2>&1; then
+            echo "Reset failed. denied = wrong ADMIN_KEY, bad_action/bad_request = old Apps Script code, html = deployment access is not Anyone"
+            exit 1
+          fi
           echo "All keys were reset"
 
       - name: Tell the site to clear stored keys
