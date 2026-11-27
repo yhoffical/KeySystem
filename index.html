@@ -137,6 +137,13 @@ h2{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
 .st{padding:18px 10px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
 .st b{display:block;font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;background:linear-gradient(90deg,var(--cy),#8b7cff,var(--pk));-webkit-background-clip:text;background-clip:text;color:transparent}
 .st span{font-size:12px;color:var(--mut)}
+.brand h1,.ncard h2,.wcard h2,.st b{line-height:1.35;padding:.08em .04em .18em;-webkit-text-fill-color:transparent;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.brand h1{display:inline-block;overflow:visible}
+/* Let the page and every popup scroll when the screen is short (iPad landscape) */
+body{height:auto;min-height:100%;flex-direction:column;justify-content:flex-start;align-items:center;padding:24px 20px 40px}
+main{margin-top:auto;margin-bottom:auto}
+.notice,.wn,.maint,.adm,.rmodal{overflow-y:auto;-webkit-overflow-scrolling:touch}
+.notice>.card,.wn>.card,.maint>.card,.adm>.card,.rmodal>.card{margin:auto}
 .toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,90px);background:#16132a;border:1px solid var(--line);padding:11px 18px;border-radius:12px;font-size:14px;transition:transform .4s cubic-bezier(.2,.8,.2,1);z-index:9}
 .toast.show{transform:translate(-50%,0)}
 .foot{text-align:center;color:var(--mut);font-size:12px;margin-top:18px}
