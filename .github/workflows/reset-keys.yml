@@ -1,7 +1,7 @@
 name: Reset keys
 
 # Button: Actions tab > Reset keys > Run workflow
-# Needs repository secrets: KEY_API_URL (the key Apps Script /exec URL) and ADMIN_KEY
+# Needs the repository secret ADMIN_KEY (never write the key in this file, the repo is public)
 
 on:
   workflow_dispatch:
@@ -17,10 +17,10 @@ jobs:
 
       - name: Invalidate every key on the server
         env:
-          KEY_API_URL: ${{ secrets.KEY_API_URL }}
+          KEY_API_URL: https://script.google.com/macros/s/AKfycbwpKKB9WPRemIOnbja-oUV3AtQPL5nUBAGzbzv9PzolGTAEGxzJ8qJ9MkXmJxS3q4Bs/exec
           ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
         run: |
-          if [ -z "$KEY_API_URL" ] || [ -z "$ADMIN_KEY" ]; then echo "Missing secrets KEY_API_URL / ADMIN_KEY"; exit 1; fi
+          if [ -z "$ADMIN_KEY" ]; then echo "Missing secret ADMIN_KEY"; exit 1; fi
           BODY=$(jq -n --arg a "$ADMIN_KEY" '{action:"reset",admin:$a}')
           RES=$(curl -sL --data "$BODY" -H "Content-Type: text/plain" "$KEY_API_URL")
           echo "$RES" | jq -e '.ok == true' > /dev/null || { echo "Reset failed"; exit 1; }
